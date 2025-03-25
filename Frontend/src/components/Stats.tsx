@@ -1,11 +1,12 @@
 import { useInView } from "react-intersection-observer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
 
 const stats = [
-  { value: "20K", label: "Happy Customers" },
-  { value: "30K", label: "Services Completed" },
-  { value: "99%", label: "Satisfaction Rate" },
-  { value: "300+", label: "Expert Professionals" },
+  { value: "20K", label: "Happy Customers", endValue: 20 },
+  { value: "30K", label: "Services Completed", endValue: 30 },
+  { value: "99%", label: "Satisfaction Rate", endValue: 99 },
+  { value: "300+", label: "Expert Professionals", endValue: 300 },
 ];
 
 export const Stats = () => {
@@ -13,6 +14,30 @@ export const Stats = () => {
     threshold: 0.1,
     triggerOnce: true,
   });
+  const numberRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  useEffect(() => {
+    if (inView) {
+      stats.forEach((stat, index) => {
+        if (numberRefs.current[index]) {
+          gsap.fromTo(
+            numberRefs.current[index],
+            { innerHTML: "0" },
+            {
+              duration: 2,
+              innerHTML: stat.endValue.toString(),
+              snap: { innerHTML: 1 },
+              onComplete: () => {
+                if (numberRefs.current[index]) {
+                  numberRefs.current[index]!.innerHTML = stat.value;
+                }
+              },
+            }
+          );
+        }
+      });
+    }
+  }, [inView]);
 
   return (
     <section className="py-12 bg-primary/5">
@@ -29,8 +54,11 @@ export const Stats = () => {
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="text-3xl md:text-4xl font-bold text-primary">
-                {stat.value}
+              <div 
+                ref={el => numberRefs.current[index] = el}
+                className="text-3xl md:text-4xl font-bold text-primary"
+              >
+                0
               </div>
               <div className="text-sm text-gray-600">{stat.label}</div>
             </div>

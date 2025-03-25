@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react'; // Assuming you're using lucide-react for icons
+import { Search } from 'lucide-react';
+import { services } from '@/data/services';
 
-const SearchBar: React.FC = () => {
+const SearchBar: React.FC<{ onFilterChange: (category: string) => void }> = ({ onFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [location, setLocation] = useState('');
@@ -21,8 +22,13 @@ const SearchBar: React.FC = () => {
     });
   };
 
+  const handleServiceTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setServiceType(e.target.value);
+    onFilterChange(e.target.value);
+  };
+
   return (
-    <div className="relative w-full max-w-4xl">
+    <div className="relative w-full max-w-2xl">
       {/* Search input with logo inside */}
       <div className="relative flex items-center w-full">
         {/* Search input field */}
@@ -52,19 +58,18 @@ const SearchBar: React.FC = () => {
 
       {/* Filter dropdown - appears below the search bar */}
       {isFilterOpen && (
-        <div className="filter-container flex space-x-2 bg-white p-2 rounded-md shadow-lg absolute mt-2 z-10 w-full text-sm">
+        <div className="filter-container flex space-x-2 bg-white p-2 rounded-md shadow-lg absolute mt-2 z-10  text-sm">
           <select
             value={serviceType}
-            onChange={(e) => setServiceType(e.target.value)}
+            onChange={handleServiceTypeChange}
             className="filter-select border border-gray-300 px-2 py-1 rounded-md text-xs"
           >
-            <option value="">Service Type</option>
-            <option value="plumbing">Plumbing</option>
-            <option value="electrical">Electrical</option>
-            <option value="hvac">HVAC</option>
-            <option value="carpentry">Carpentry</option>
-            <option value="painting">Painting</option>
-            <option value="appliance-repair">Appliance Repair</option>
+            <option value="All">All Services</option>
+            {services.map(service => (
+              <option key={service.id} value={service.name}>
+                {service.name}
+              </option>
+            ))}
           </select>
 
           {/* Location dropdown */}
@@ -84,7 +89,7 @@ const SearchBar: React.FC = () => {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder={location === 'city' ? 'Enter City' : 'Enter Zip Code'} // Dynamic placeholder text
-            className="filter-input border border-gray-300 px-2 py-1 rounded-md text-xs"
+            className="filter-input w-[120px] border border-gray-300 px-2 py-1 rounded-md text-xs"
           />
 
           {/* Smaller Max Price input */}

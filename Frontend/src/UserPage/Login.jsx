@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom';
 // import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState({ text: "", success: false });
+  const navigate = useNavigate();
 
  // const { loginWithRedirect, user, isAuthenticated } = useAuth0();
 
@@ -56,6 +58,13 @@ const Login = () => {
       });
     }
   };
+
+  // Add useEffect for navigation
+  useEffect(() => {
+    if (message.success) {
+      navigate('/dashboard');
+    }
+  }, [message.success, navigate]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

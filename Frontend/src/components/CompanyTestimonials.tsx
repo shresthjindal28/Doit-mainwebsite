@@ -1,5 +1,6 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Card } from "@/components/ui/card";
+import CompanyTestimonialsSlider  from "./CompanyTestimonialsSlider";
 
 const testimonials = [
   {
@@ -42,7 +43,7 @@ export const CompanyTestimonials = () => {
                 The best companies<br />Services on DOIT
               </h3>
               
-              <Carousel className="w-full">
+              {/* <Carousel className="w-full">
                 <CarouselContent>
                   {testimonials.map((testimonial, index) => (
                     <CarouselItem key={index}>
@@ -72,7 +73,10 @@ export const CompanyTestimonials = () => {
                 </CarouselContent>
                 <CarouselPrevious className="absolute -left-12 text-white" />
                 <CarouselNext className="absolute -right-12 text-white" />
-              </Carousel>
+              </Carousel> */}
+
+                {/* <CompanyTestimonialsSlider/> */}
+
             </div>
           </div>
         </div>
