@@ -1,0 +1,29 @@
+[33mcommit 6af1a1dd922899868268d5ab3358b2aad47eb5dc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Jayraj <arajjayraj18@gmail.com>
+Date:   Tue Feb 25 14:59:34 2025 +0530
+
+    added backend folder with features
+
+[33mcommit 130674cf8e7c84766664f1394280066269acbda3[m
+Author: Jayraj <arajjayraj18@gmail.com>
+Date:   Tue Feb 25 14:56:48 2025 +0530
+
+    addded Backend folder with features
+
+[33mcommit fc9be3067f9654b095fc46f2cc2dfd35f264f9a7[m
+Author: Jayraj <arajjayraj18@gmail.com>
+Date:   Tue Feb 25 14:46:41 2025 +0530
+
+    Added backend folder
+
+[33mcommit 34324d019f767d86baa3dd902d2417efd8c4a38a[m
+Author: ALFinIT <alfinit091224@gmail.com>
+Date:   Fri Feb 21 11:03:04 2025 +0530
+
+    Add files via upload
+
+[33mcommit 7fe87431ab9d42bfa75fd97f79a87df8ad1d2e66[m
+Author: ALFinIT <alfinit091224@gmail.com>
+Date:   Fri Feb 21 10:33:40 2025 +0530
+
+    Initial commit

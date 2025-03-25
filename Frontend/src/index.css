@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-['Inter'];
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.container-padding {
+  @apply px-4 md:px-6 lg:px-8;
+  
+}
+
+/* Define the marquee animation for continuous scrolling */
+@keyframes marquee {
+  0% {
+    transform: translateX(0); /* Start from the initial position */
+  }
+  100% {
+    transform: translateX(-100%); /* Move all the way to the left */
+  }
+}
+
+/* Apply the animation to the service cards */
+.animate-marquee {
+  display: flex;
+  gap: 1.5rem; /* Adjust the gap between service cards */
+  animation: marquee 30s linear infinite; /* Continuous loop */
+}
+
+/* Prevent horizontal scrollbars */
+.services-wrapper {
+  overflow-x: hidden; /* Hide the horizontal scrollbar */
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Center the content */
+}
+
+/* This container will hold the service cards */
+.service-cards-container {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping of content */
+  width: max-content; /* Ensure the width grows as needed to fit the cards */
+  position: relative;
+  animation: marquee 30s linear infinite; /* Continuous animation */
+}
+
+/* Duplicate the content to create the illusion of circular scrolling */
+.service-cards-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%; /* Place the duplicate immediately after the original */
+  display: flex;
+  gap: 1.5rem; /* Match the original gap */
+  width: max-content;
+  animation: marquee 30s linear infinite; /* Apply the same scrolling animation */
+}
+
+/* Ensure that the cards are continuously scrolling */
+.services-wrapper > .service-cards-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Prevent shrinking of service cards */
+.service-card {
+  flex-shrink: 0;
+  margin-right: 1.5rem; /* Adjust the gap between service cards */
+  /* Ensure that cards stay in position while scrolling */
+}
