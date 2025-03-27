@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
-// import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -11,32 +10,6 @@ const Login = () => {
  // const { loginWithRedirect, user, isAuthenticated } = useAuth0();
 
   const API_URL = import.meta.env.VITE_BACKEND_URL;
-
-  // useEffect(() => {
-  //   if (isAuthenticated && user) {
-  //     // handleGoogleLogin(user);
-  //   }
-  // }, [isAuthenticated, user]);
-
-  // const handleGoogleLogin = async (googleUser) => {
-  //   try {
-  //     const { name, email, sub } = googleUser; // `sub` is Google ID
-  //     const response = await axios.post(
-  //       `${API_URL}/api/google/users/google-login`,
-  //       {
-  //         name,
-  //         email,
-  //         googleId: sub,
-  //       }
-  //     );
-  //     setMessage({ text: "Google login successful!", success: true });
-  //   } catch (error) {
-  //     setMessage({
-  //       text: error.response?.data?.message || "Google login failed.",
-  //       success: false,
-  //     });
-  //   }
-  // };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
