@@ -51,19 +51,26 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post("/send-email", async (req, res) => {
-  const { to, subject, text } = req.body;
+  const { name, email, message } = req.body;
+  console.log("Email request received:", req.body);
+
+  if (!email) {
+    return res.status(400).json({ success: false, error: "Email address is required" });
+  }
 
   const mailOptions = {
-    from,
-    to: process.env.SMTP_USER,
-    subject,
-    text,
+    from: process.env.SMTP_USER,
+    to: process.env.RECIPIENT_EMAIL || process.env.SMTP_USER, // Send to a configured recipient or fallback to your own email
+    subject: `Contact Form Submission from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    replyTo: email
   };
 
   try {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: "Email sent successfully!" });
   } catch (error) {
+    console.error("Email sending error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

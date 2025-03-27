@@ -42,6 +42,7 @@ const Contact = () => {
     setSuccessMessage("");
     
     try {
+      // Send the form data directly - backend will extract name, email and message
       const response = await axios.post(`${API_URL}/send-email`, formState);
       if (response.data.success) {
         setSuccessMessage("Your message has been sent successfully!");
@@ -50,8 +51,10 @@ const Contact = () => {
         setErrorMessage("Failed to send message. Please try again.");
       }
     } catch (error) {
-      setErrorMessage("Error sending message. Please check your network and try again.");
-      console.error(error);
+      console.error("Error details:", error);
+      // @ts-ignore
+      const errorMsg = error.response?.data?.error || "Error sending message. Please check your network and try again.";
+      setErrorMessage(errorMsg);
     }
     setIsSubmitting(false);
   };
