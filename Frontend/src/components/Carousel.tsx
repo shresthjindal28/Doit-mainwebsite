@@ -167,7 +167,7 @@ export function Carousel({ slides, autoplayInterval = 3000, defaultAutoplay = tr
 
       {/* Autoplay control button */}
       <button
-        className="hidden top-[-2rem] right-0 bg-neutral-200 dark:bg-neutral-800 w-10 h-10 flex items-center justify-center rounded-full shadow-md hover:scale-110 transition z-10"
+        className="hidden top-[-2rem] right-0 bg-neutral-200 dark:bg-neutral-800 w-10 h-10  items-center justify-center rounded-full shadow-md hover:scale-110 transition z-10"
         title={autoplay ? "Pause autoplay" : "Start autoplay"}
         onClick={toggleAutoplay}
       >
