@@ -1,5 +1,4 @@
 import React from 'react';
-import LoginedUserNav from '@/components/Navbar/LoginedUserNav';
 import { ServiceChoose } from "@/UserPage/Service.choose";
 
 

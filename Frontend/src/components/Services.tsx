@@ -48,7 +48,7 @@ export const Services = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-emerald-600 to-emerald-400 py-16">
+    <section id="services" className="min-h-screen bg-gradient-to-b from-emerald-600 to-emerald-400 py-16">
       <div className="container mx-auto px-4">
         <div className="flex gap-12">
           {/* Left sidebar with frequently searched services */}

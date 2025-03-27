@@ -111,129 +111,169 @@ export const ServiceChoose = () => {
     : services.filter(service => service.name === selectedCategory);
 
   return (
-    <div>
-      <div className="hero-choose container mx-auto px-6 flex justify-center items-center w-full lg:w-[65%] pt-12 pb-8 bg-gray-100/80 backdrop-blur-sm rounded-3xl mb-12 lg:mt-[0rem]">
-        <div className="w-full flex items-center justify-center flex-col">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Now what you like to choose
-          </h2>
-
-          <div className="w-full flex justify-center mb-24">
-            <SearchBar onFilterChange={setSelectedCategory}/>
-          </div>
-
-          <div className={`relative w-full ${selectedCategory === "All" ? "overflow-hidden" : "overflow-x-auto"}`}>
-            <div 
-              ref={scrollRef}
-              className={`flex gap-6 ${selectedCategory === "All" ? "w-max" : ""}`}
-            >
-              {(selectedCategory === "All" ? [...filteredServices, ...filteredServices] : filteredServices).map((service, index) => (
-                <div
-                  key={`${service.id}-${index}`}
-                  className={`bg-white rounded-xl p-6 hover:shadow-lg transition-shadow flex-shrink-0 ${
-                    selectedCategory !== "All" ? "w-full" : "w-[300px]"
-                  }`}
-                >
-                  <div className="flex items-center flex-col gap-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden">
-                      <img
-                        alt={service.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-800">
-                      {service.name}
-                    </h3>
-                    <Button 
-                      className="bg-yellow-400 hover:bg-yellow-500 text-black mt-2"
-                      onClick={() => {
-                        const subservices = getSubservicesForService(service.name);
-                        if (subservices.length === 0) {
-                          handleDirectAddToCart(service);
-                        } else {
-                          setSelectedService(service);
-                          setIsPopupOpen(true);
-                        }
-                      }}
-                    >
-                      {getSubservicesForService(service.name).length === 0 ? 'Add to Cart' : 'Select Service'}
-                    </Button>
-                  </div>
-                </div>
-              ))}
+    <div className="min-h-screen bg-transparent py-16">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-16">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-8 px-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-white text-center mb-2">
+              Choose Your Service
+            </h1>
+            <p className="text-yellow-100 text-center mb-6">
+              Select from our wide range of professional services
+            </p>
+            
+            {/* Search Bar Section */}
+            <div className="max-w-2xl mx-auto">
+              <SearchBar onFilterChange={setSelectedCategory} />
             </div>
-          </div>
-        </div>
-      </div>
-      {isPopupOpen && selectedService && (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-xl p-6 w-[90%] max-w-2xl max-h-[80vh] overflow-y-auto">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">{selectedService.name} </h2>
-            <button 
-              onClick={() => {
-                setIsPopupOpen(false);
-                setSelectedSubservices([]);
-              }}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {getSubservicesForService(selectedService.name)?.map((subservice, index) => (
-              <div 
-                key={subservice.id} 
-                className={`border p-4 rounded-lg hover:shadow-md transition-all ${
-                  selectedSubservices.some(item => item.id === subservice.id)
-                    ? 'border-yellow-400 bg-yellow-50'
-                    : ''
-                }`}
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-semibold">{subservice.name}</h3>
-                  <input
-                    type="checkbox"
-                    checked={selectedSubservices.some(item => item.id === subservice.id)}
-                    onChange={() => handleSubserviceToggle(subservice)}
-                    className="w-4 h-4 accent-yellow-400"
-                  />
-                </div>
-                <p className="text-gray-600 text-sm mb-2">Provider: {subservice.providerType}</p>
-                <div className="w-12 h-12 mb-2">
-                  <img
-                    src={subservice.image}
-                    alt={subservice.name}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-            ))}
           </div>
           
-          <div className="mt-6 border-t pt-4">
-            <div className="flex justify-between items-center mb-4">
-              <div>
-                <p className="font-semibold">Selected Services: {selectedSubservices.length}</p>
-                <p className="font-bold text-lg">
-                  Total: ₹{selectedSubservices.reduce((sum, item) => sum + (item.price || 499), 0)}
-                </p>
-              </div>
-              <Button 
-                className="bg-yellow-400 hover:bg-yellow-500 text-black px-6"
-                onClick={handleAddToCart}
-                disabled={selectedSubservices.length === 0}
+          {/* Services Section */}
+          <div className="p-6 bg-gradient-to-r from-yellow-400 to-yellow-500">
+            <div className={`relative w-full ${selectedCategory === "All" ? "overflow-hidden" : "overflow-x-auto"}`}>
+              <div 
+                ref={scrollRef}
+                className={`flex gap-6 ${selectedCategory === "All" ? "w-max" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}`}
               >
-                Add to Cart ({selectedSubservices.length})
-              </Button>
+                {(selectedCategory === "All" ? [...filteredServices, ...filteredServices] : filteredServices).map((service, index) => (
+                  <div
+                    key={`${service.id}-${index}`}
+                    className={`bg-white h-[50vh] rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-100
+                      ${selectedCategory !== "All" ? "w-full" : "w-[280px]"} h-full flex flex-col`}
+                  >
+                    <div className="p-6 flex flex-col items-center justify-between h-full">
+                      <div className="flex flex-col items-center w-full">
+                        <div className="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+                          <img
+                            src={service.icon || "/default-service-icon.png"}
+                            alt={service.name}
+                            className="w-12 h-12 object-contain"
+                          />
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+                          {service.name}
+                        </h3>
+                        <p className="text-gray-500 text-center text-sm mb-6 line-clamp-2 w-full">
+                          {service.description || "Professional service available on demand"}
+                        </p>
+                      </div>
+                      
+                      <Button 
+                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-medium rounded-lg 
+                        shadow-md hover:shadow-lg transition-all mt-auto"
+                        onClick={() => {
+                          const subservices = getSubservicesForService(service.name);
+                          if (subservices.length === 0) {
+                            handleDirectAddToCart(service);
+                          } else {
+                            setSelectedService(service);
+                            setIsPopupOpen(true);
+                          }
+                        }}
+                      >
+                        {getSubservicesForService(service.name).length === 0 ? 'Add to Cart' : 'Select Options'}
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    )}
-  </div>
-  
-  )
+      
+      {/* Popup Modal */}
+      {isPopupOpen && selectedService && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-[90%] max-w-3xl max-h-[85vh] overflow-hidden flex flex-col animate-fadeIn">
+            <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 p-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-white">{selectedService.name} Options</h2>
+                <button 
+                  onClick={() => {
+                    setIsPopupOpen(false);
+                    setSelectedSubservices([]);
+                  }}
+                  className="text-white hover:text-yellow-100 bg-yellow-600 bg-opacity-20 hover:bg-opacity-30 h-8 w-8 rounded-full flex items-center justify-center transition-all"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            
+            <div className="overflow-y-auto p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {getSubservicesForService(selectedService.name)?.map((subservice) => (
+                  <div 
+                    key={subservice.id} 
+                    onClick={() => handleSubserviceToggle(subservice)}
+                    className={`border rounded-xl p-4 cursor-pointer transition-all hover:border-yellow-400
+                      ${selectedSubservices.some(item => item.id === subservice.id)
+                        ? 'border-yellow-400 bg-yellow-50 shadow-md'
+                        : 'border-gray-200 hover:bg-gray-50'}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-yellow-100 rounded-lg flex-shrink-0 overflow-hidden flex items-center justify-center">
+                        <img
+                          src={subservice.image || "/default-subservice-icon.png"}
+                          alt={subservice.name}
+                          className="w-8 h-8 object-contain"
+                        />
+                      </div>
+                      <div className="flex-grow min-w-0">
+                        <h3 className="font-medium text-gray-800 truncate">{subservice.name}</h3>
+                        <p className="text-gray-500 text-sm truncate">{subservice.providerType}</p>
+                        <p className="text-yellow-600 font-medium mt-1">₹{subservice.price || 499}</p>
+                      </div>
+                      <div className="flex-shrink-0 self-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedSubservices.some(item => item.id === subservice.id)}
+                          onChange={(e) => e.stopPropagation()}
+                          className="w-5 h-5 accent-yellow-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="border-t p-6 bg-gray-50">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <p className="text-gray-600">Selected: <span className="font-medium">{selectedSubservices.length} items</span></p>
+                  <p className="font-bold text-xl text-gray-800">
+                    Total: ₹{selectedSubservices.reduce((sum, item) => sum + (item.price || 499), 0)}
+                  </p>
+                </div>
+                <div className="flex gap-3 w-full sm:w-auto">
+                  <Button 
+                    className="flex-grow sm:flex-grow-0 bg-gray-200 hover:bg-gray-300 text-gray-800"
+                    onClick={() => {
+                      setIsPopupOpen(false);
+                      setSelectedSubservices([]);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    className="flex-grow sm:flex-grow-0 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-medium shadow-md"
+                    onClick={handleAddToCart}
+                    disabled={selectedSubservices.length === 0}
+                  >
+                    Add to Cart
+                    {selectedSubservices.length > 0 && ` (${selectedSubservices.length})`}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default ServiceChoose
+export default ServiceChoose;

@@ -8,6 +8,8 @@ import { ClientTestimonials } from "@/components/ClientTestimonials"
 import { GetApp } from "@/components/GetApp";
 import {StayTuned} from "@/components/StayTuned";
 import { Footer } from "@/components/Footer";
+import Contact from "./Contact";
+import FAQ from "@/components/FAQ";
 export default function Index() {
   return (
     <main>
@@ -18,6 +20,8 @@ export default function Index() {
       <Services />
       <Features />
       <ClientTestimonials />
+      <Contact />
+      <FAQ />
       <GetApp />
       <StayTuned />
       <Footer/>
