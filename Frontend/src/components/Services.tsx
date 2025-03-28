@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { 
   Wrench, Plug, Hammer, PaintBucket, Shield, 
   Home, Brush, Cog, Car, Smartphone, Calendar,
-  Shirt, Settings, Lock
+  Shirt, Settings, Lock, Search
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -46,72 +46,116 @@ const frequentlySearched = [
 
 export const Services = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredServices = services.filter(service => 
+    searchQuery === "" || service.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <section id="services" className="min-h-screen bg-gradient-to-b from-emerald-600 to-emerald-400 py-16">
+    <section id="services" className="min-h-screen bg-gradient-to-b from-amber-50 to-amber-200 py-12 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="flex gap-12">
-          {/* Left sidebar with frequently searched services */}
-          <div className="hidden lg:block w-64 space-y-2">
-            <h3 className="text-white font-semibold mb-4">Most frequently searched service</h3>
-            {frequentlySearched.map((service, index) => (
-              <div
-                key={index}
-                className="text-white/80 hover:text-white cursor-pointer text-sm"
-              >
-                {service}
-              </div>
-            ))}
-          </div>
-
-          {/* Main content area */}
-          <div className="flex-1">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-12">
-                What you need to Fix<br />Today?
-              </h2>
+        {/* Hero section with heading and 3D model side by side */}
+        <div className="flex flex-col lg:flex-row items-center justify-between mb-16 relative">
+          <div className="lg:w-1/2 z-10 mb-10 lg:mb-0">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-4xl md:text-6xl font-bold text-amber-900 leading-tight mb-6">
+                What do you need to <span className="text-orange-500">Fix Today?</span>
+              </h1>
+              <p className="text-xl text-amber-800 max-w-lg mb-8">
+                Professional services at your fingertips. Find the right expert for any job around your home.
+              </p>
               
-              <div className="relative mb-8">
+              <div className="relative w-full max-w-lg">
                 <Input 
                   type="search" 
                   placeholder="Search services..." 
-                  className="w-full bg-white/90 backdrop-blur-sm h-12 pl-4 pr-12 rounded-lg"
+                  className="w-full bg-white/90 backdrop-blur-sm h-14 pl-12 pr-4 rounded-full shadow-lg border-2 border-amber-200 focus:border-orange-400 transition-all"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <Button 
-                  size="icon"
-                  className="absolute right-2 top-1/2 -translate-y-1/2"
-                  variant="ghost"
-                >
-                  <span className="sr-only">Search</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                </Button>
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-amber-500" size={20} />
               </div>
+            </motion.div>
+          </div>
+          
+          
+        </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {services.map((service, index) => (
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Left sidebar with frequently searched services */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="hidden lg:block w-64"
+          >
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg sticky top-20">
+              <h3 className="text-amber-900 font-semibold text-lg mb-4 border-b-2 border-amber-200 pb-2">
+                Popular Services
+              </h3>
+              <div className="space-y-2">
+                {frequentlySearched.map((service, index) => (
                   <motion.div
                     key={index}
-                    className="bg-yellow-300 rounded-xl p-4 cursor-pointer hover:scale-105 transition-transform duration-300"
-                    onClick={() => setActiveIndex(index)}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
+                    whileHover={{ x: 5 }}
+                    className="flex items-center gap-2 text-amber-800 hover:text-orange-500 cursor-pointer text-sm transition-colors duration-300 p-2 hover:bg-amber-50 rounded-lg"
+                    onClick={() => setSearchQuery(service)}
                   >
-                    <div className="flex flex-col items-center text-center space-y-3">
-                      <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
-                        <service.icon size={24} className="text-gray-800" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-amber-400"></div>
+                    {service}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Main services grid */}
+          <div className="flex-1">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg"
+            >
+              <h2 className="text-2xl font-semibold text-amber-900 mb-6 border-b border-amber-200 pb-3">
+                All Services
+              </h2>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                {filteredServices.map((service, index) => (
+                  <motion.div
+                    key={index}
+                    className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                    whileHover={{ 
+                      y: -5,
+                      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                    }}
+                    onClick={() => setActiveIndex(index)}
+                    layout
+                  >
+                    <div className="flex flex-col items-center text-center p-4">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center shadow-md mb-3">
+                        {service.icon && <service.icon size={24} className="text-white" />}
                       </div>
-                      <h3 className="font-semibold text-sm text-gray-800">{service.title}</h3>
+                      <h3 className="font-semibold text-sm text-amber-900 mb-2">{service.title}</h3>
+                      <p className="text-xs text-amber-700 mb-3">{service.description}</p>
                       <Button 
-                        variant="destructive" 
-                        className="w-full bg-red-500 hover:bg-red-600 text-white"
+                        variant="default" 
+                        className="w-full bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white border-none"
+                        size="sm"
                       >
-                        Pick Out
+                        Book Now
                       </Button>
                     </div>
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -25,21 +25,66 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#10B981",
-          foreground: "#FFFFFF",
-          hover: "#059669",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#1E293B",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F1F5F9",
-          foreground: "#64748B",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "#0EA5E9",
-          foreground: "#FFFFFF",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        doit: {
+          50: "#fffaeb",
+          100: "#fff0c8",
+          200: "#fce08b",
+          300: "#f9cb49", // lighter gold
+          400: "#f7c948", // gold
+          500: "#e6ab1a",
+          600: "#c98811",
+          700: "#a16612",
+          800: "#835117",
+          900: "#6d441a",
+          950: "#412308",
+        },
+        orange: {
+          50: "#fff8ed",
+          100: "#ffefd7",
+          200: "#ffdbad",
+          300: "#fec078",
+          400: "#fd9b46",
+          500: "#fc7f22", // dark orange
+          600: "#e25822", // deeper orange
+          700: "#c03f19",
+          800: "#9a3319",
+          900: "#7e2d18",
+          950: "#431309",
+        },
+        yellow: {
+          500: "#f59e0b", // Ensure this matches the gradient in Login.jsx
+          600: "#d97706",
+        },
+        red: {
+          500: "#ef4444", // Ensure this matches the gradient in Login.jsx
+          600: "#dc2626",
         },
       },
       borderRadius: {
