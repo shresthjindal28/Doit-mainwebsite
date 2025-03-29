@@ -158,7 +158,7 @@ export function Carousel({ slides, autoplayInterval = 3000, defaultAutoplay = tr
       </button>
 
       <button
-        className="absolute right-[-2rem] top-1/2 transform -translate-y-1/2 bg-neutral-200 dark:bg-neutral-800 w-10 h-10 flex items-center justify-center rounded-full shadow-md hover:scale-110 transition z-10"
+        className="absolute right-[-3.5rem] top-1/2 transform -translate-y-1/2 bg-neutral-200 dark:bg-neutral-800 w-10 h-10 flex items-center justify-center rounded-full shadow-md hover:scale-110 transition z-10"
         title="Go to next slide"
         onClick={handleNextClick}
       >

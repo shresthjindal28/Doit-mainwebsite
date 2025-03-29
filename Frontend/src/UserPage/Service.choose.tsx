@@ -13,6 +13,7 @@ const API_URL = import.meta.env.VITE_BACKEND_URL; // adjust this to match your A
 export const ServiceChoose = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState(""); // New state for search query
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedSubservices, setSelectedSubservices] = useState([]);
@@ -90,10 +91,23 @@ export const ServiceChoose = () => {
     return service?.subServices || []; // Changed from subservices to subServices to match data structure
   };
 
+  // Enhanced search with debounce
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
+  // Handle category filter changes with search reset option
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    // Optionally clear search when changing categories
+    // Uncomment if you want this behavior:
+    // setSearchQuery("");
+  };
+
   useEffect(() => {
     const element = scrollRef.current;
     
-    if (selectedCategory === "All") {
+    if (selectedCategory === "All" && searchQuery === "") {
       gsap.to(element, {
         x: "-100%",
         duration: 100,
@@ -104,11 +118,37 @@ export const ServiceChoose = () => {
       gsap.killTweensOf(element);
       gsap.set(element, { x: 0 });
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, searchQuery]); // Added searchQuery as dependency
 
-  const filteredServices = selectedCategory === "All" 
-    ? services 
-    : services.filter(service => service.name === selectedCategory);
+  // Improved filtering function with highlighting
+  const filteredServices = services.filter(service => {
+    const matchesCategory = selectedCategory === "All" || service.name === selectedCategory;
+    
+    if (!searchQuery) return matchesCategory;
+    
+    const searchLower = searchQuery.toLowerCase();
+    const nameMatch = service.name.toLowerCase().includes(searchLower);
+    const descMatch = service.description && 
+      service.description.toLowerCase().includes(searchLower);
+    
+    return matchesCategory && (nameMatch || descMatch);
+  });
+
+  // Highlight matching text function
+  const highlightMatch = (text, query) => {
+    if (!query || !text) return text;
+    
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? 
+        <span key={index} className="bg-yellow-200 text-yellow-800">{part}</span> : 
+        part
+    );
+  };
+
+  const shouldAnimate = selectedCategory === "All" && searchQuery === "" && filteredServices.length > 4;
 
   return (
     <div className="min-h-screen bg-transparent py-16">
@@ -117,30 +157,114 @@ export const ServiceChoose = () => {
           {/* Header Section */}
           <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-8 px-6">
             <h1 className="text-3xl md:text-4xl font-bold text-white text-center mb-2">
-              Choose Your Service
+              Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-500">Service.</span>
             </h1>
             <p className="text-yellow-100 text-center mb-6">
-              Select from our wide range of professional services
+              Find the perfect service for your needs
             </p>
             
-            {/* Search Bar Section */}
-            <div className="max-w-2xl mx-auto">
-              <SearchBar onFilterChange={setSelectedCategory} />
+            {/* Enhanced Search Bar Section */}
+            <div className="max-w-3xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                <SearchBar 
+                  onFilterChange={handleCategoryChange} 
+                  onSearchChange={handleSearchChange} 
+                  value={searchQuery}
+                  placeholder="Search by service name or description..."
+                />
+                
+                {/* Category Chips */}
+                <div className="flex flex-wrap gap-2 mt-4 justify-center">
+                  <button 
+                    onClick={() => setSelectedCategory("All")}
+                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                      ${selectedCategory === "All" 
+                        ? "bg-white text-yellow-600 shadow-md" 
+                        : "bg-white/20 text-white hover:bg-white/30"}`}
+                  >
+                    All Services
+                  </button>
+                  {serviceCategories.map(category => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                        ${selectedCategory === category 
+                          ? "bg-white text-yellow-600 shadow-md" 
+                          : "bg-white/20 text-white hover:bg-white/30"}`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+                
+                {/* Active Filters */}
+                {(selectedCategory !== "All" || searchQuery) && (
+                  <div className="mt-3 text-center">
+                    <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg">
+                      <span className="text-white text-sm mr-1">Filters:</span>
+                      
+                      {selectedCategory !== "All" && (
+                        <span className="inline-flex items-center px-2 py-0.5 bg-white text-yellow-700 rounded-md text-xs">
+                          Category: {selectedCategory}
+                          <button 
+                            onClick={() => setSelectedCategory("All")}
+                            className="ml-1 hover:text-red-600"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      )}
+                      
+                      {searchQuery && (
+                        <span className="inline-flex items-center px-2 py-0.5 bg-white text-yellow-700 rounded-md text-xs">
+                          Search: {searchQuery}
+                          <button 
+                            onClick={() => setSearchQuery("")}
+                            className="ml-1 hover:text-red-600"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      )}
+                      
+                      <button 
+                        onClick={() => {
+                          setSelectedCategory("All");
+                          setSearchQuery("");
+                        }}
+                        className="text-xs text-white hover:text-yellow-200 transition-colors"
+                      >
+                        Clear All
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Results Count */}
+                <div className="mt-2 text-center">
+                  <span className="text-white text-sm">
+                    Found <span className="font-semibold">{filteredServices.length}</span> service{filteredServices.length !== 1 ? 's' : ''}
+                    {searchQuery && filteredServices.length > 0 && " matching your search"}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           
           {/* Services Section */}
           <div className="p-6 bg-gradient-to-r from-yellow-400 to-yellow-500">
-            <div className={`relative w-full ${selectedCategory === "All" ? "overflow-hidden" : "overflow-x-auto"}`}>
+            <div className={`relative w-full ${shouldAnimate ? "overflow-hidden" : "overflow-x-auto"}`}>
               <div 
                 ref={scrollRef}
-                className={`flex gap-6 ${selectedCategory === "All" ? "w-max" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}`}
+                className={`flex gap-6 ${shouldAnimate ? "w-max" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"}`}
+                style={{ gridAutoRows: "1fr" }} // Ensure equal height rows in grid mode
               >
-                {(selectedCategory === "All" ? [...filteredServices, ...filteredServices] : filteredServices).map((service, index) => (
+                {(shouldAnimate ? [...filteredServices, ...filteredServices] : filteredServices).map((service, index) => (
                   <div
                     key={`${service.id}-${index}`}
-                    className={`bg-white h-[50vh] rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-100
-                      ${selectedCategory !== "All" ? "w-full" : "w-[280px]"} h-full flex flex-col`}
+                    className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-100
+                      flex flex-col ${shouldAnimate ? "w-[280px] h-[330px]" : "w-full h-full min-h-[330px]"}`}
                   >
                     <div className="p-6 flex flex-col items-center justify-between h-full">
                       <div className="flex flex-col items-center w-full">
@@ -152,10 +276,12 @@ export const ServiceChoose = () => {
                           />
                         </div>
                         <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-                          {service.name}
+                          {searchQuery ? highlightMatch(service.name, searchQuery) : service.name}
                         </h3>
-                        <p className="text-gray-500 text-center text-sm mb-6 line-clamp-2 w-full">
-                          {service.description || "Professional service available on demand"}
+                        <p className="text-gray-500 text-center text-sm mb-6 line-clamp-3 w-full">
+                          {searchQuery && service.description
+                            ? highlightMatch(service.description, searchQuery)
+                            : (service.description || "Professional service available on demand")}
                         </p>
                       </div>
                       
@@ -179,6 +305,43 @@ export const ServiceChoose = () => {
                 ))}
               </div>
             </div>
+            
+            {/* Enhanced No Results UI */}
+            {filteredServices.length === 0 && (
+              <div className="bg-white/20 p-8 rounded-xl text-center">
+                <div className="text-white text-2xl font-medium mb-2">No matching services found</div>
+                <p className="text-white/80 max-w-md mx-auto mb-6">
+                  We couldn't find any services matching your current filters. Try adjusting your search terms or selecting a different category.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  {searchQuery && (
+                    <Button 
+                      className="bg-white/20 text-white hover:bg-white/30"
+                      onClick={() => setSearchQuery("")}
+                    >
+                      Clear Search Term
+                    </Button>
+                  )}
+                  {selectedCategory !== "All" && (
+                    <Button 
+                      className="bg-white/20 text-white hover:bg-white/30"
+                      onClick={() => setSelectedCategory("All")}
+                    >
+                      Show All Categories
+                    </Button>
+                  )}
+                  <Button 
+                    className="bg-white text-yellow-600 hover:bg-white/90"
+                    onClick={() => {
+                      setSelectedCategory("All");
+                      setSearchQuery("");
+                    }}
+                  >
+                    Reset All Filters
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

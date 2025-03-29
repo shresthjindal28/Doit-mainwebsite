@@ -12,31 +12,59 @@ const stats = [
 export const Stats = () => {
   const { ref, inView } = useInView({
     threshold: 0.1,
-    triggerOnce: true,
   });
   const numberRefs = useRef<Array<HTMLDivElement | null>>([]);
-
+  const animationRef = useRef<gsap.core.Tween[]>([]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const startAnimationCycle = () => {
+    // Reset all numbers to 0
+    stats.forEach((stat, index) => {
+      if (numberRefs.current[index]) {
+        numberRefs.current[index]!.innerHTML = "0";
+      }
+    });
+    
+    // Animate all numbers
+    animationRef.current = stats.map((stat, index) => {
+      if (numberRefs.current[index]) {
+        return gsap.to(numberRefs.current[index], {
+          duration: 2,
+          innerHTML: stat.endValue.toString(),
+          snap: { innerHTML: 1 },
+          onComplete: () => {
+            if (numberRefs.current[index]) {
+              numberRefs.current[index]!.innerHTML = stat.value;
+            }
+          }
+        });
+      }
+      return gsap.to({}, {});
+    });
+  };
+  
   useEffect(() => {
     if (inView) {
-      stats.forEach((stat, index) => {
-        if (numberRefs.current[index]) {
-          gsap.fromTo(
-            numberRefs.current[index],
-            { innerHTML: "0" },
-            {
-              duration: 2,
-              innerHTML: stat.endValue.toString(),
-              snap: { innerHTML: 1 },
-              onComplete: () => {
-                if (numberRefs.current[index]) {
-                  numberRefs.current[index]!.innerHTML = stat.value;
-                }
-              },
-            }
-          );
-        }
-      });
+      // Start the animation immediately
+      startAnimationCycle();
+      
+      // Set up the interval to repeat the animation
+      intervalRef.current = setInterval(() => {
+        // Kill any existing animations
+        animationRef.current.forEach(anim => anim?.kill());
+        // Start the cycle again
+        startAnimationCycle();
+      }, 4000); // 2s for animation + 2s delay
     }
+    
+    return () => {
+      // Clean up animations and interval on unmount or when not in view
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      animationRef.current.forEach(anim => anim?.kill());
+    };
   }, [inView]);
 
   return (

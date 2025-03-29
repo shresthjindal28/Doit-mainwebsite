@@ -83,13 +83,13 @@ export const Hero = () => {
           >
             <h1
               ref={titleRef}
-              className="text-2xl md:text-5xl lg:text-7xl font-extrabold text-center tracking-tight space-x-2 md:space-x-3 lg:space-x-4"
+              className="text-2xl md:text-5xl lg:text-7xl font-extrabold text-center tracking-tight space-x-2 md:space-x-3 lg:space-x-4 m-6"
             >
-              <span className="block mt-2 text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+              <span className="block text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
                 Your One-Stop Solution
               </span>
               <span
-                className="text-yellow-300 drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]
+                className="text-red-600 drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]
               "
               >
                 {" "}
@@ -105,7 +105,7 @@ export const Hero = () => {
 
             <p
               ref={descRef}
-              className="text-base md:text-xl text-center max-w-2xl text-white/95 leading-relaxed mb-12 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] font-medium px-4"
+              className="text-base md:text-xl text-center max-w-2xl text-white/95 leading-relaxed mb-6 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] font-medium px-4"
             >
               DO!T connects you with skilled professionals. From plumbing to
               painting, we've got you covered. Experienced professionals,
@@ -119,7 +119,7 @@ export const Hero = () => {
               <Button className="bg-gradient-to-br from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-bold px-10 py-4 h-auto rounded-full text-lg shadow-[0_8px_30px_rgb(255,193,7,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_35px_rgb(255,193,7,0.45)] border-b-4 border-amber-600">
                 Book Service
               </Button>
-              <Button className="bg-gradient-to-r from-red-500 to-amber-500 hover:from-red-600 hover:to-amber-600 text-white font-bold px-10 py-4 h-auto rounded-full text-lg shadow-[0_8px_30px_rgba(239,68,68,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_35px_rgba(239,68,68,0.45)]">
+              <Button className="bg-gradient-to-r from-red-500 to-amber-600 hover:from-red-600 hover:to-amber-600 text-white font-bold px-10 py-4 h-auto rounded-full text-lg shadow-[0_8px_30px_rgba(239,68,68,0.3)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_35px_rgba(239,68,68,0.45)]">
                 Get a Free Quote
               </Button>
             </div>

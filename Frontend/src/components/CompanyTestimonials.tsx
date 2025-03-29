@@ -46,7 +46,7 @@ export const CompanyTestimonials = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-5xl font-bold text-white ml-8 leading-tight">
+            <h2 className="text-5xl md:text-7xl font-bold text-white ml-8 leading-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-red-500">
                 Offer Quick
               </span>
@@ -73,15 +73,44 @@ export const CompanyTestimonials = () => {
         </div>
 
         <div className="mt-20">
-          <div className="flex flex-wrap justify-center gap-10 items-center opacity-50">
+          <h3 className="text-2xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-red-500">
+            Trusted by Industry Leaders
+          </h3>
+          
+          <div className="flex flex-wrap justify-center gap-10 items-center">
             {companyLogos.map((company, index) => (
-              <div key={index} className="h-8">
-                <span className="text-white text-sm">{company.name}</span>
+              <div 
+                key={index} 
+                className="group relative cursor-pointer"
+                style={{
+                  animation: `pulse-${index % 3} 3s infinite ${index * 0.3}s ease-in-out`
+                }}
+              >
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 to-red-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
+                <div className="relative px-4 py-2 bg-gray-800 rounded-lg transform transition-all duration-300 group-hover:scale-110">
+                  <span className="text-white text-sm group-hover:text-yellow-300 transition-colors duration-300">{company.name}</span>
+                </div>
               </div>
             ))}
           </div>
+          
+          <style>{`
+            @keyframes pulse-0 {
+              0%, 100% { opacity: 0.5; transform: translateY(0); }
+              50% { opacity: 0.9; transform: translateY(-5px); }
+            }
+            @keyframes pulse-1 {
+              0%, 100% { opacity: 0.5; transform: translateY(0); }
+              50% { opacity: 0.8; transform: translateY(-3px); }
+            }
+            @keyframes pulse-2 {
+              0%, 100% { opacity: 0.5; transform: scale(1); }
+              50% { opacity: 0.9; transform: scale(1.05); }
+            }
+          `}</style>
         </div>
-      </div>
+        </div>
+
     </section>
   );
 };
