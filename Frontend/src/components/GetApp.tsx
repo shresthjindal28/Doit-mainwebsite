@@ -39,7 +39,7 @@ export const GetApp = () => {
               
               <Button 
                 variant="outline" 
-                className="relative h-14 sm:h-16 w-48 sm:w-52 px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-emerald-600 hover:to-green-500 text-white border-none shadow-lg transition-all duration-300 overflow-hidden z-10 rounded-lg"
+                className="relative h-14 sm:h-16 w-48 sm:w-52 px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-emerald-600 hover:to-green-500 text-black border-none shadow-lg transition-all duration-300 overflow-hidden z-10 rounded-lg"
                 onClick={() => window.open('https://play.google.com/store', '_blank')}
               >
                 <FaGooglePlay size={24} className="mr-3" />
@@ -61,7 +61,7 @@ export const GetApp = () => {
               
               <Button 
                 variant="outline" 
-                className="relative h-14 sm:h-16 w-48 sm:w-52 px-5 py-3 bg-gradient-to-r from-emerald-600 to-green-500 hover:from-green-500 hover:to-emerald-600 text-white border-none shadow-lg transition-all duration-300 overflow-hidden z-10 rounded-lg"
+                className="relative h-14 sm:h-16 w-48 sm:w-52 px-5 py-3 bg-gradient-to-r from-emerald-600 to-green-500 hover:from-green-500 hover:to-emerald-600 text-black border-none shadow-lg transition-all duration-300 overflow-hidden z-10 rounded-lg"
                 onClick={() => window.open('https://www.apple.com/app-store/', '_blank')}
               >
                 <FaApple size={28} className="mr-3" />

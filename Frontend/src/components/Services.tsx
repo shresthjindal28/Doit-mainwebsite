@@ -7,6 +7,9 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+// Images from public directory can be referenced directly by path
+const houseImage = "/house.png"; // Assuming house.png is in the public directory
+
 
 const services = [
   { icon: Home, title: "CLEANING SERVICE", description: "Professional cleaning" },
@@ -57,6 +60,16 @@ export const Services = () => {
       <div className="container mx-auto px-4">
         {/* Hero section with heading and 3D model side by side */}
         <div className="flex flex-col lg:flex-row items-center justify-between mb-16 relative">
+        <div className="lg:w-1/2 flex justify-center">
+            <motion.img
+              src={houseImage}
+              alt="House Services"
+              className="max-w-lg rounded-lg "
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            />
+          </div>
           <div className="lg:w-1/2 z-10 mb-10 lg:mb-0">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -83,6 +96,7 @@ export const Services = () => {
             </motion.div>
           </div>
           
+          {/* Image on the right side */}
           
         </div>
 
@@ -126,11 +140,11 @@ export const Services = () => {
                 All Services
               </h2>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {filteredServices.map((service, index) => (
                   <motion.div
                     key={index}
-                    className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-64" // Added flex and h-64
                     whileHover={{ 
                       y: -5,
                       boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -144,14 +158,14 @@ export const Services = () => {
                       </div>
                       <h3 className="font-semibold text-sm text-amber-900 mb-2">{service.title}</h3>
                       <p className="text-xs text-amber-700 mb-3">{service.description}</p>
-                      <Button 
-                        variant="default" 
-                        className="w-full bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white border-none"
-                        size="sm"
-                      >
-                        Book Now
-                      </Button>
                     </div>
+                    <Button 
+                      variant="default" 
+                      className="w-full bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white border-none"
+                      size="sm"
+                    >
+                      Book Now
+                    </Button>
                   </motion.div>
                 ))}
               </div>

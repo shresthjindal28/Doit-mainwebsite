@@ -38,22 +38,22 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="faq-section py-16 px-4 bg-gray-50">
+    <section className="faq-section py-16 px-4 bg-gradient-to-br from-amber-50 to-amber-100">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-amber-600">Frequently Asked Questions</h2>
         
         <div className="space-y-4">
           {faqData.map((faq, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300"
+              className="bg-white/20 backdrop-blur-md rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/30"
             >
               <button
                 className="w-full text-left p-4 md:p-6 flex items-center justify-between font-medium focus:outline-none"
                 onClick={() => toggleFAQ(index)}
               >
                 <span className="text-lg">{faq.question}</span>
-                <span className="text-2xl transition-transform duration-300" style={{ transform: expandedIndex === index ? 'rotate(45deg)' : 'rotate(0)' }}>
+                <span className="text-2xl transition-transform duration-300 text-orange-600" style={{ transform: expandedIndex === index ? 'rotate(45deg)' : 'rotate(0)' }}>
                   +
                 </span>
               </button>

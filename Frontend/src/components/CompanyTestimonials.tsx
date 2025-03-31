@@ -46,7 +46,7 @@ export const CompanyTestimonials = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-5xl md:text-7xl font-bold text-white ml-8 leading-tight">
+            <h2 className="text-4xl md:text-7xl font-bold text-white ml-8 leading-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-red-500">
                 Offer Quick
               </span>
